@@ -3,7 +3,9 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 java -jar "${SCRIPT_DIR}"/downloader/app/build/libs/app.jar
 
-DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus qdbus6 org.kde.plasmashell /PlasmaShell \
+export DISPLAY=:0
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+qdbus6 org.kde.plasmashell /PlasmaShell \
     org.kde.PlasmaShell.evaluateScript "
     var Desktops = desktops();                                                                                                                       
     for (i=0;i<Desktops.length;i++) {
@@ -13,3 +15,5 @@ DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus qdbus6 org.kde.
         d.writeConfig('Image', '${HOME}/Pictures/wallpaper-desktop.jpg');
         d.reloadConfig();
     }"
+
+plasmashell --replace </dev/null &>/dev/null & disown
